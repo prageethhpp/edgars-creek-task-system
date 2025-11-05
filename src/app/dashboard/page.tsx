@@ -18,7 +18,11 @@ export default function DashboardPage() {
     if (mounted && !loading && !user) {
       window.location.href = '/login';
     }
-  }, [user, loading, mounted]);
+    // Auto-redirect agents and admins to agent dashboard
+    if (mounted && !loading && user && (user.role === 'agent' || user.role === 'admin')) {
+      router.push('/agent');
+    }
+  }, [user, loading, mounted, router]);
 
   if (!mounted || loading) {
     return (
@@ -66,6 +70,18 @@ export default function DashboardPage() {
               <span className="material-symbols-outlined">dashboard</span>
               <p className="text-sm font-medium">Dashboard</p>
             </Link>
+            {(user.role === 'agent' || user.role === 'admin') && (
+              <Link href="/agent" className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">
+                <span className="material-symbols-outlined">support_agent</span>
+                <p className="text-sm font-medium">Agent Dashboard</p>
+              </Link>
+            )}
+            {user.role === 'admin' && (
+              <Link href="/admin/users" className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">
+                <span className="material-symbols-outlined">group</span>
+                <p className="text-sm font-medium">Manage Users</p>
+              </Link>
+            )}
             <Link href="/tickets/create" className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">
               <span className="material-symbols-outlined">add_circle</span>
               <p className="text-sm font-medium">Create Ticket</p>
@@ -81,6 +97,7 @@ export default function DashboardPage() {
           <div className="px-3 py-2 border-t border-gray-200 dark:border-gray-700 pt-4">
             <p className="text-sm font-medium text-gray-900 dark:text-white">{user.displayName}</p>
             <p className="text-xs text-gray-500 dark:text-gray-400">{user.email}</p>
+            <p className="text-xs text-primary font-medium mt-1 uppercase">{user.role}</p>
           </div>
           <button
             onClick={handleLogout}

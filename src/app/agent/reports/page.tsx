@@ -163,6 +163,12 @@ export default function ReportsPage() {
               <span className="material-symbols-outlined">support_agent</span>
               <p className="text-sm font-medium">Agent Dashboard</p>
             </Link>
+            {user.role === 'admin' && (
+              <Link href="/admin/users" className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">
+                <span className="material-symbols-outlined">group</span>
+                <p className="text-sm font-medium">Manage Users</p>
+              </Link>
+            )}
             <Link href="/tickets" className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">
               <span className="material-symbols-outlined">local_offer</span>
               <p className="text-sm font-medium">My Tickets</p>

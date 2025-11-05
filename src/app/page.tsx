@@ -1,6 +1,31 @@
+'use client';
+
 import Link from 'next/link'
+import { useAuth } from '@/lib/AuthContext';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
+  const { user, loading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && user) {
+      router.push('/dashboard');
+    }
+  }, [user, loading, router]);
+
+  if (loading) {
+    return (
+      <main className="flex min-h-screen flex-col items-center justify-center p-24 bg-background-light dark:bg-background-dark">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-4 text-gray-600 dark:text-gray-400">Loading...</p>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-24 bg-background-light dark:bg-background-dark">
       <div className="text-center">
@@ -18,10 +43,10 @@ export default function Home() {
             Staff Login
           </Link>
           <Link
-            href="/agent/login"
+            href="/dashboard"
             className="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
           >
-            Agent Login
+            Dashboard
           </Link>
         </div>
       </div>

@@ -25,14 +25,15 @@ export default function LoginPage() {
     try {
       if (isLogin) {
         await signIn(email, password);
-        router.push('/dashboard');
       } else {
         await signUp(email, password, displayName);
-        router.push('/dashboard');
       }
+      // Wait a bit for auth state to update, then redirect
+      setTimeout(() => {
+        window.location.href = '/dashboard';
+      }, 500);
     } catch (err: any) {
       setError(err.message || 'An error occurred');
-    } finally {
       setLoading(false);
     }
   };
@@ -42,10 +43,12 @@ export default function LoginPage() {
     setLoading(true);
     try {
       await signInWithGoogle();
-      router.push('/dashboard');
+      // Wait a bit for auth state to update, then redirect
+      setTimeout(() => {
+        window.location.href = '/dashboard';
+      }, 500);
     } catch (err: any) {
       setError(err.message || 'An error occurred');
-    } finally {
       setLoading(false);
     }
   };

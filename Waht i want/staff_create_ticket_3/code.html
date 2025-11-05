@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Edgars Creek Primary School - IT Support</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings:
+      'FILL' 0,
+      'wght' 400,
+      'GRAD' 0,
+      'opsz' 24
+    }
+  </style>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#1173d4",
+            "background-light": "#f6f7f8",
+            "background-dark": "#101922",
+          },
+          fontFamily: {
+            "display": ["Inter", "sans-serif"]
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+        },
+      },
+    }
+  </script>
+</head>
+<body class="font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-background-light dark:bg-background-dark group/design-root overflow-x-hidden">
+<div class="flex h-full grow">
+<nav class="flex w-64 flex-col bg-white dark:bg-background-dark border-r border-gray-200 dark:border-gray-700">
+<div class="flex h-full flex-col justify-between p-4">
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" data-alt="Edgars Creek Primary School logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBsp_-Eak00K4ZxMQvzcqwjkHKGj-fH_rfn_HNKBROEmaiRn69QWiWPOhAfBvsSHvCxSiRjHXl5zrfnSXwVnVVd_BkxENeLk_m9w_3t8ELQIxUxOKweodoeCkmFBNNOCstVOrl8orZdJYblwkdY2kR8zriBP_M8nFbzBMzR-MUUI1N9qbPo4GyAuze0DZ2B17ZrWe18CVT5JKTJvw2PcN0aHfPO671eNUKSxpTiDqeiqok2TkcwfrPGAcThD7UVVTa5zGBcEOXbOa8");'></div>
+<div class="flex flex-col">
+<h1 class="text-[#111418] dark:text-white text-base font-medium leading-normal">ECPS Task System</h1>
+<p class="text-[#617589] dark:text-gray-400 text-sm font-normal leading-normal">Ticketing System</p>
+</div>
+</div>
+<div class="flex flex-col gap-2 mt-4">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#111418] dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800" href="#">
+<span class="material-symbols-outlined text-[#111418] dark:text-gray-300">dashboard</span>
+<p class="text-sm font-medium leading-normal">Dashboard</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary" href="#">
+<span class="material-symbols-outlined !font-bold">local_offer</span>
+<p class="text-sm font-medium leading-normal">Tickets</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#111418] dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800" href="#">
+<span class="material-symbols-outlined text-[#111418] dark:text-gray-300">import_contacts</span>
+<p class="text-sm font-medium leading-normal">Knowledge Base</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#111418] dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800" href="#">
+<span class="material-symbols-outlined text-[#111418] dark:text-gray-300">leaderboard</span>
+<p class="text-sm font-medium leading-normal">Reports</p>
+</a>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#111418] dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800" href="#">
+<span class="material-symbols-outlined text-[#111418] dark:text-gray-300">settings</span>
+<p class="text-sm font-medium leading-normal">Settings</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#111418] dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800" href="#">
+<span class="material-symbols-outlined text-[#111418] dark:text-gray-300">logout</span>
+<p class="text-sm font-medium leading-normal">Logout</p>
+</a>
+</div>
+</div>
+</nav>
+<main class="flex-1 p-8 overflow-y-auto">
+<div class="mx-auto max-w-4xl">
+<div class="flex flex-wrap justify-between gap-3 mb-8">
+<div class="flex min-w-72 flex-col gap-2">
+<p class="text-[#111418] dark:text-white text-3xl font-bold tracking-tight">Create a New Ticket</p>
+<p class="text-[#617589] dark:text-gray-400 text-base font-normal leading-normal">Please fill out the form below to submit a new ticket.</p>
+</div>
+</div>
+<div class="bg-white dark:bg-background-dark dark:border dark:border-gray-700 rounded-xl shadow-sm p-8">
+<form class="space-y-6">
+<div>
+<p class="text-[#111418] dark:text-gray-200 text-sm font-medium leading-normal pb-2">Ticket Type</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<label class="flex items-center p-4 border border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer has-[:checked]:border-primary has-[:checked]:bg-primary/5 dark:has-[:checked]:bg-primary/10">
+<input checked="" class="form-radio text-primary focus:ring-primary focus:ring-offset-0 focus:ring-2" name="ticket-type" type="radio" value="it-support"/>
+<span class="ml-3 text-sm font-medium text-[#111418] dark:text-gray-200">IT Support</span>
+</label>
+<label class="flex items-center p-4 border border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer has-[:checked]:border-primary has-[:checked]:bg-primary/5 dark:has-[:checked]:bg-primary/10">
+<input class="form-radio text-primary focus:ring-primary focus:ring-offset-0 focus:ring-2" name="ticket-type" type="radio" value="facility-ticket"/>
+<span class="ml-3 text-sm font-medium text-[#111418] dark:text-gray-200">Facility Ticket</span>
+</label>
+</div>
+</div>
+<label class="flex flex-col">
+<p class="text-[#111418] dark:text-gray-200 text-sm font-medium leading-normal pb-2">Your Email</p>
+<div class="relative flex w-full flex-1 items-stretch">
+<input class="form-input flex w-full min-w-0 flex-1 overflow-hidden rounded-lg text-gray-500 dark:text-gray-400 focus:outline-0 focus:ring-0 border-none bg-gray-100 dark:bg-gray-900 h-12 placeholder:text-[#617589] p-4 text-base font-normal leading-normal cursor-not-allowed" readonly="" value="staff.member@edgarscreekps.vic.edu.au"/>
+</div>
+</label>
+<label class="flex flex-col">
+<p class="text-[#111418] dark:text-gray-200 text-sm font-medium leading-normal pb-2">Subject</p>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#111418] dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:border-primary dark:focus:border-primary h-12 placeholder:text-[#617589] p-4 text-base font-normal leading-normal" placeholder="e.g., Projector in Room 12 not working" value=""/>
+</label>
+<label class="flex flex-col">
+<p class="text-[#111418] dark:text-gray-200 text-sm font-medium leading-normal pb-2">Detailed Description</p>
+<textarea class="form-textarea w-full min-h-36 resize-y rounded-lg text-[#111418] dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:border-primary dark:focus:border-primary placeholder:text-[#617589] p-4 text-base font-normal leading-normal" placeholder="Please describe the issue in detail. Include any error messages or steps to reproduce the problem."></textarea>
+<p class="text-xs text-[#617589] dark:text-gray-400 mt-1.5">Please include any error messages you see.</p>
+</label>
+<div class="flex flex-col">
+<p class="text-[#111418] dark:text-gray-200 text-sm font-medium leading-normal pb-2">Attachments (Optional)</p>
+<div class="flex items-center justify-center w-full">
+<label class="flex flex-col items-center justify-center w-full h-40 border-2 border-gray-300 dark:border-gray-600 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700" for="dropzone-file">
+<div class="flex flex-col items-center justify-center pt-5 pb-6">
+<span class="material-symbols-outlined text-gray-400 mb-3">cloud_upload</span>
+<p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+<p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG or GIF (MAX. 10MB)</p>
+</div>
+<input class="hidden" id="dropzone-file" type="file"/>
+</label>
+</div>
+</div>
+<div class="flex justify-end pt-4">
+<button class="inline-flex items-center justify-center h-12 gap-2 px-6 text-sm font-medium tracking-wide text-white transition duration-300 rounded-lg whitespace-nowrap bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/50" type="submit">
+<span>Submit Ticket</span>
+</button>
+</div>
+</form>
+</div>
+</div>
+</main>
+</div>
+</div>
+
+</body></html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Edgars Creek IT Support Portal - Login</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#1173d4",
+              "background-light": "#f6f7f8",
+              "background-dark": "#101922",
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-gray-800 dark:text-gray-200">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<div class="px-4 flex flex-1 justify-center items-center py-5">
+<div class="layout-content-container w-full max-w-4xl flex-1">
+<div class="bg-white dark:bg-background-dark/50 shadow-xl rounded-xl overflow-hidden grid grid-cols-1 md:grid-cols-2">
+<!-- Left Panel: Branding -->
+<div class="relative hidden md:flex flex-col items-center justify-center p-8 bg-primary/10 dark:bg-primary/20">
+<div class="w-full h-full bg-center bg-no-repeat bg-cover aspect-auto rounded-none" data-alt="A modern illustration of a friendly school campus with network symbols" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB8ba-p0si1RHtLD715xCcdTltAHg09paNGBzeDa-ucJUPpsJGhLnXbhlTqvY1KkxEmw9SiyNr_LQqIx0Eg7dSnCH-fOXtXTg7BfYSzY9_3eseZjLZbYs6Unueo_P76A60SD_gGxg2Xmvh4dcXH8REEKTyexb0iJYWOUwnoM_GyiYF-tBTZElkjeNm8zd2bASjA3eMqciikxClEl9AtbK072XjYD1oPOFBr7SfvpVUgtGhxAYltPaNcB1MCT7DGnbNHjfFex3cZmtQ");'></div>
+<div class="absolute inset-0 bg-primary/80 dark:bg-primary/90 flex flex-col items-start justify-end p-8 text-white">
+<h1 class="text-white tracking-light text-[32px] font-bold leading-tight text-left pb-3">Edgars Creek IT Support Portal</h1>
+<p class="text-white/90 text-base font-normal leading-normal">Your one-stop shop for tech help.</p>
+</div>
+</div>
+<!-- Right Panel: Form -->
+<div class="flex flex-col p-8 sm:p-12">
+<!-- Mobile Header -->
+<div class="md:hidden mb-8 text-center">
+<h1 class="text-[#111418] dark:text-white tracking-light text-[28px] font-bold leading-tight pb-2">IT Support Portal</h1>
+<p class="text-gray-600 dark:text-gray-400 text-base font-normal leading-normal">Edgars Creek Primary School</p>
+</div>
+<div class="flex">
+<div class="flex h-10 flex-1 items-center justify-center rounded-lg bg-[#f0f2f4] dark:bg-background-dark/60 p-1">
+<label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-white has-[:checked]:dark:bg-gray-700 has-[:checked]:shadow-[0_0_4px_rgba(0,0,0,0.1)] has-[:checked]:text-primary dark:has-[:checked]:text-white text-gray-500 dark:text-gray-400 text-sm font-medium leading-normal transition-colors">
+<span class="truncate">Login</span>
+<input checked="" class="invisible w-0" name="auth-toggle" type="radio" value="Login"/>
+</label>
+<label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-white has-[:checked]:dark:bg-gray-700 has-[:checked]:shadow-[0_0_4px_rgba(0,0,0,0.1)] has-[:checked]:text-primary dark:has-[:checked]:text-white text-gray-500 dark:text-gray-400 text-sm font-medium leading-normal transition-colors">
+<span class="truncate">Register</span>
+<input class="invisible w-0" name="auth-toggle" type="radio" value="Register"/>
+</label>
+</div>
+</div>
+<div class="mt-6">
+<h1 class="text-[#111418] dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] text-left pb-1 pt-5">Welcome Back!</h1>
+<p class="text-gray-600 dark:text-gray-400 text-sm font-normal leading-normal pb-6">Please enter your details to sign in.</p>
+<!-- Social Login -->
+<button class="flex items-center justify-center w-full gap-2 px-4 py-2.5 text-sm font-medium border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+<svg class="w-5 h-5" height="100" viewbox="0 0 48 48" width="100" x="0px" xmlns="http://www.w3.org/2000/svg" y="0px">
+<path d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12	s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20	s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z" fill="#fbc02d"></path>
+<path d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039	l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z" fill="#e53935"></path>
+<path d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36	c-5.222,0-9.658-3.317-11.28-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z" fill="#4caf50"></path>
+<path d="M43.611,20.083L43.595,20L42,20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.574	l6.19,5.238C44.437,36.218,48,30.455,48,24C48,22.659,47.862,21.35,47.611,20.083z" fill="#1565c0"></path>
+</svg>
+<span>Continue with Google</span>
+</button>
+<div class="flex items-center my-6">
+<hr class="flex-grow border-gray-300 dark:border-gray-600"/>
+<span class="mx-4 text-xs font-medium text-gray-500 dark:text-gray-400">OR</span>
+<hr class="flex-grow border-gray-300 dark:border-gray-600"/>
+</div>
+<!-- Login Form Fields -->
+<form action="#" class="space-y-4" method="POST">
+<div>
+<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5" for="email">Email / Username</label>
+<input class="block w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm" id="email" name="email" placeholder="you@example.com" required="" type="email"/>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5" for="password">Password</label>
+<input class="block w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm" id="password" name="password" placeholder="••••••••" required="" type="password"/>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center">
+<input class="h-4 w-4 text-primary border-gray-300 dark:border-gray-600 rounded focus:ring-primary bg-transparent dark:bg-gray-800" id="remember-me" name="remember-me" type="checkbox"/>
+<label class="ml-2 block text-sm text-gray-800 dark:text-gray-300" for="remember-me">Remember Me</label>
+</div>
+<div class="text-sm">
+<a class="font-medium text-primary hover:text-primary/80" href="#">Forgot Password?</a>
+</div>
+</div>
+<div>
+<button class="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors" type="submit">Login</button>
+</div>
+</form>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body></html>

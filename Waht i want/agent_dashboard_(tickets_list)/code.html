@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>IT Support Dashboard - Edgars Creek Primary School</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#1173d4",
+              "background-light": "#f6f7f8",
+              "background-dark": "#101922",
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-slate-800 dark:text-slate-200">
+<div class="flex h-screen w-full">
+<!-- SideNavBar -->
+<aside class="flex w-64 flex-col border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark p-4">
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" data-alt="Edgars Creek Primary School logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCuanYI1tMyENcb2LF62kyNkWtLP2aZ8NVWeyspMZg-ZEyQBXtpJnREvn3lxjJsuao9E01ojnF3_tFuqaKDwJSXkDGQ8MSWuMi6a44uxdCvY2C4IQc110rT9_grOx3XnSeEkMqjtlfN4kXkR07fNWbNmwafrXBWYcSd3Z1A9NqJJ-RHeVlYg8B6H7e7oZ2FM-cpzb5EZuv8DcXnMy989dkLXD3XO217VD4jlfYtp5y5z3e3NLeuOdlEUDBC1oof-5Y2OziNSNKgTUU");'></div>
+<div class="flex flex-col">
+<h1 class="text-slate-900 dark:text-white text-base font-medium leading-normal">Edgars Creek PS</h1>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-normal leading-normal">IT Support</p>
+</div>
+</div>
+<nav class="flex flex-col gap-2 mt-4">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary" href="#">
+<span class="material-symbols-outlined text-2xl">dashboard</span>
+<p class="text-sm font-medium leading-normal">Dashboard</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800" href="#">
+<span class="material-symbols-outlined text-2xl text-slate-600 dark:text-slate-400">menu_book</span>
+<p class="text-sm font-medium leading-normal">Knowledge Base</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800" href="#">
+<span class="material-symbols-outlined text-2xl text-slate-600 dark:text-slate-400">bar_chart</span>
+<p class="text-sm font-medium leading-normal">Reports</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800" href="#">
+<span class="material-symbols-outlined text-2xl text-slate-600 dark:text-slate-400">settings</span>
+<p class="text-sm font-medium leading-normal">Settings</p>
+</a>
+</nav>
+</div>
+<div class="mt-auto flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800" href="#">
+<span class="material-symbols-outlined text-2xl text-slate-600 dark:text-slate-400">account_circle</span>
+<p class="text-sm font-medium leading-normal">Agent Profile</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800" href="#">
+<span class="material-symbols-outlined text-2xl text-slate-600 dark:text-slate-400">logout</span>
+<p class="text-sm font-medium leading-normal">Logout</p>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col overflow-y-auto">
+<div class="p-6">
+<!-- PageHeading -->
+<div class="flex flex-wrap justify-between gap-4 items-center mb-6">
+<h1 class="text-slate-900 dark:text-white text-3xl font-black tracking-tight">IT Support Dashboard</h1>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary/90 transition-colors">
+<span class="material-symbols-outlined text-xl">add</span>
+<span class="truncate">New Ticket</span>
+</button>
+</div>
+<!-- Tabs -->
+<div class="border-b border-slate-200 dark:border-slate-800">
+<div class="flex gap-8">
+<a class="flex flex-col items-center justify-center border-b-[3px] border-b-primary text-primary pb-[13px] pt-4" href="#">
+<p class="text-sm font-bold leading-normal">Active Tickets</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 pb-[13px] pt-4" href="#">
+<p class="text-sm font-bold leading-normal">Closed Tickets</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 pb-[13px] pt-4" href="#">
+<p class="text-sm font-bold leading-normal">All Tickets</p>
+</a>
+</div>
+</div>
+<!-- Search and Filters -->
+<div class="flex flex-wrap gap-4 items-center py-4">
+<!-- SearchBar -->
+<div class="flex-1 min-w-[300px]">
+<label class="flex flex-col h-11 w-full">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+<div class="text-slate-500 dark:text-slate-400 flex border border-r-0 border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900/50 items-center justify-center pl-3 rounded-l-lg">
+<span class="material-symbols-outlined text-2xl">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900/50 h-full placeholder:text-slate-500 dark:placeholder:text-slate-400 px-4 rounded-l-none border-l-0 pl-2 text-sm font-normal leading-normal" placeholder="Search by ID, staff, or subject..." value=""/>
+</div>
+</label>
+</div>
+<!-- Chips -->
+<div class="flex gap-3 items-center">
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-slate-900/50 border border-slate-300 dark:border-slate-700 px-3 hover:bg-slate-50 dark:hover:bg-slate-800">
+<p class="text-sm font-medium leading-normal">Status: All</p>
+<span class="material-symbols-outlined text-lg">expand_more</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-slate-900/50 border border-slate-300 dark:border-slate-700 px-3 hover:bg-slate-50 dark:hover:bg-slate-800">
+<p class="text-sm font-medium leading-normal">Priority: All</p>
+<span class="material-symbols-outlined text-lg">expand_more</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-slate-900/50 border border-slate-300 dark:border-slate-700 px-3 hover:bg-slate-50 dark:hover:bg-slate-800">
+<p class="text-sm font-medium leading-normal">Assignee: All</p>
+<span class="material-symbols-outlined text-lg">expand_more</span>
+</button>
+</div>
+</div>
+<!-- Ticket List Table -->
+<div class="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden">
+<table class="w-full text-sm text-left">
+<thead class="bg-slate-50 dark:bg-slate-800/50 text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+<tr>
+<th class="px-6 py-3 font-medium" scope="col">Ticket ID</th>
+<th class="px-6 py-3 font-medium" scope="col">Staff Member</th>
+<th class="px-6 py-3 font-medium" scope="col">Subject</th>
+<th class="px-6 py-3 font-medium" scope="col">Date Created</th>
+<th class="px-6 py-3 font-medium" scope="col">Status</th>
+</tr>
+</thead>
+<tbody>
+<tr class="border-b border-slate-200 dark:border-slate-800 hover:bg-primary/5 dark:hover:bg-primary/10 cursor-pointer bg-primary/10 dark:bg-primary/20">
+<td class="px-6 py-4 font-bold text-primary">#ECPS-1024</td>
+<td class="px-6 py-4 text-slate-900 dark:text-white font-medium">Jane Smith</td>
+<td class="px-6 py-4">Projector in Room 12 not working</td>
+<td class="px-6 py-4">2023-10-27</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 rounded-full bg-red-100 dark:bg-red-900/50 px-2 py-1 text-xs font-medium text-red-600 dark:text-red-400">
+<span class="size-1.5 rounded-full bg-red-500"></span>
+                                        Urgent
+                                    </span>
+</td>
+</tr>
+<tr class="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer">
+<td class="px-6 py-4 font-medium text-slate-600 dark:text-slate-300">#ECPS-1023</td>
+<td class="px-6 py-4 text-slate-900 dark:text-white font-medium">John Appleseed</td>
+<td class="px-6 py-4">Cannot connect to school Wi-Fi</td>
+<td class="px-6 py-4">2023-10-27</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 rounded-full bg-green-100 dark:bg-green-900/50 px-2 py-1 text-xs font-medium text-green-700 dark:text-green-400">
+<span class="size-1.5 rounded-full bg-green-500"></span>
+                                        Open
+                                    </span>
+</td>
+</tr>
+<tr class="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer">
+<td class="px-6 py-4 font-medium text-slate-600 dark:text-slate-300">#ECPS-1022</td>
+<td class="px-6 py-4 text-slate-900 dark:text-white font-medium">Emily White</td>
+<td class="px-6 py-4">Password reset for student portal</td>
+<td class="px-6 py-4">2023-10-26</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 rounded-full bg-yellow-100 dark:bg-yellow-900/50 px-2 py-1 text-xs font-medium text-yellow-800 dark:text-yellow-400">
+<span class="size-1.5 rounded-full bg-yellow-500"></span>
+                                        In Progress
+                                    </span>
+</td>
+</tr>
+<tr class="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer">
+<td class="px-6 py-4 font-medium text-slate-600 dark:text-slate-300">#ECPS-1021</td>
+<td class="px-6 py-4 text-slate-900 dark:text-white font-medium">Michael Brown</td>
+<td class="px-6 py-4">Request for new software installation</td>
+<td class="px-6 py-4">2023-10-25</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 rounded-full bg-green-100 dark:bg-green-900/50 px-2 py-1 text-xs font-medium text-green-700 dark:text-green-400">
+<span class="size-1.5 rounded-full bg-green-500"></span>
+                                        Open
+                                    </span>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer">
+<td class="px-6 py-4 font-medium text-slate-600 dark:text-slate-300">#ECPS-1020</td>
+<td class="px-6 py-4 text-slate-900 dark:text-white font-medium">Sarah Davis</td>
+<td class="px-6 py-4">Printer in staff room is offline</td>
+<td class="px-6 py-4">2023-10-25</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 rounded-full bg-slate-100 dark:bg-slate-700 px-2 py-1 text-xs font-medium text-slate-600 dark:text-slate-400">
+<span class="size-1.5 rounded-full bg-slate-400"></span>
+                                        Pending
+                                    </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</main>
+<!-- Ticket Details Panel -->
+<aside class="flex w-96 flex-col border-l border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark">
+<div class="flex h-full flex-col">
+<!-- Panel Header -->
+<div class="border-b border-slate-200 dark:border-slate-800 p-4">
+<div class="flex items-center justify-between">
+<h2 class="text-lg font-bold text-slate-900 dark:text-white">Ticket Details</h2>
+<button class="text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<p class="text-sm text-primary font-semibold mt-1">#ECPS-1024</p>
+</div>
+<!-- Panel Content -->
+<div class="flex-1 overflow-y-auto p-4 space-y-6">
+<!-- Subject -->
+<div>
+<h3 class="text-xl font-bold text-slate-900 dark:text-white">Projector in Room 12 not working</h3>
+<div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mt-2">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-6" data-alt="Avatar for Jane Smith" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD0nsshFMcrKAPymVSdcp_i9KxmNHe1Nj2R1nFk2Li7reNtq5kOqa1IlqXSxwnDBJcrYI6R2u-a_t549beobSZiFfledomMQpaS-2pQg7OO6pqVlckZYM_Q75OQPLctH2EWncaKJ5w6_1n2Ww2RM_GF7BYnoiaF1BbnSnb0fmXNPYo7gFrB5n9PKX_DBFlG5H66tsALAae9ogun4BABnrPNa-xrE77enFnCw4l4cmqIBOsqq0HDuzw8UdwuoAqJE7tfzio2-Kxo1Xg");'></div>
+<span>Jane Smith submitted this ticket 2 hours ago</span>
+</div>
+</div>
+<!-- Ticket Properties -->
+<div class="grid grid-cols-2 gap-4 text-sm">
+<div>
+<p class="text-slate-500 dark:text-slate-400">Status</p>
+<p class="font-medium text-slate-800 dark:text-slate-200">Urgent</p>
+</div>
+<div>
+<p class="text-slate-500 dark:text-slate-400">Priority</p>
+<p class="font-medium text-slate-800 dark:text-slate-200">High</p>
+</div>
+<div>
+<p class="text-slate-500 dark:text-slate-400">Assignee</p>
+<p class="font-medium text-slate-800 dark:text-slate-200">David Lee</p>
+</div>
+<div>
+<p class="text-slate-500 dark:text-slate-400">Category</p>
+<p class="font-medium text-slate-800 dark:text-slate-200">Hardware</p>
+</div>
+</div>
+<!-- Conversation History -->
+<div>
+<h4 class="text-sm font-semibold text-slate-600 dark:text-slate-300 mb-3">Conversation</h4>
+<div class="space-y-4">
+<!-- User Message -->
+<div class="flex items-start gap-3">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-8 shrink-0" data-alt="Avatar for Jane Smith" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDqxj7DrbgSkMeFaTzm_K627MmSCnpspIebOKBb7GQV5jKxiETY1kv6KFcr6ngNlQs4aZlGUUi9aq3pRpcU5TyPH1dIA2w6lcWKuWSvyyy7LIvydwzL26uGTQUZ3VKv1A9GE2V7Ci61XzM7H_-4653GM022Si1ks08dhnHMzBTtBr9aBWkWxWEXVbHk82MdCT4UgbVjaUUb4Jiq2G0Bd6y-evh0FENbCi0-yHhZIDaiXhovUbMt7ROTvEKoSz3aTeTz4OjJLnBdtqU");'></div>
+<div class="bg-slate-100 dark:bg-slate-800 p-3 rounded-lg rounded-tl-none">
+<p class="text-sm">Hi team, the projector in Room 12 isn't turning on. I've tried checking the power cable but it doesn't seem to be working. We have a presentation in the morning. Thanks!</p>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-2 text-right">Jane Smith - 2 hours ago</p>
+</div>
+</div>
+<!-- Agent Message -->
+<div class="flex items-start gap-3 flex-row-reverse">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-8 shrink-0" data-alt="Avatar for David Lee" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAmT2EjtJHb6Vkhb1YkaAgFq_pnQJZxA1xiqbuNCD3lBuc4tw990eHGmEoDB30HKAcBgvem7RzFg1LDuCgxn1DwMxtwW0XNu4EhMHYIAgwa78zka0QssETyzb_nkMcwGi04vrwhXKkcvEJ0MzqWXGkgTUhWGHgOy6kICVBEBWY4vk_nFMMs85b6M1wANXr2otpY0xG0ePvQoFPewhZ3O5Re8-xoFS-i3aDw_NrrP_kioUov5iel55GHQZAsz3mXR_Xa0AW9Z8053hs");'></div>
+<div class="bg-primary/10 dark:bg-primary/20 p-3 rounded-lg rounded-tr-none">
+<p class="text-sm">Hi Jane, thanks for letting us know. I've assigned this to myself and will come by to take a look within the next hour.</p>
+<p class="text-xs text-primary/80 dark:text-primary/90 mt-2 text-right">David Lee - 1 hour ago</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Panel Footer / Actions -->
+<div class="border-t border-slate-200 dark:border-slate-800 p-4 space-y-3">
+<textarea class="form-textarea w-full rounded-lg bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 focus:ring-primary/50 focus:border-primary/50 text-sm" placeholder="Type your reply here..." rows="3"></textarea>
+<div class="flex justify-between items-center">
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-lg h-9 px-3 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-sm font-medium hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors">
+<span class="material-symbols-outlined text-lg mr-1.5">note_add</span>
+<span>Add Internal Note</span>
+</button>
+</div>
+<button class="flex items-center justify-center rounded-lg h-9 px-4 bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-colors">
+<span>Reply &amp; Resolve</span>
+<span class="material-symbols-outlined text-lg ml-1.5">send</span>
+</button>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</body></html>

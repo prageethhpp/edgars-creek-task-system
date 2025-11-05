@@ -13,6 +13,8 @@ export default function TicketsPage() {
   const router = useRouter();
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [loadingTickets, setLoadingTickets] = useState(true);
+  const [filterStatus, setFilterStatus] = useState<string>('all');
+  const [filterType, setFilterType] = useState<string>('all');
 
   useEffect(() => {
     if (!loading && !user) {
@@ -74,6 +76,12 @@ export default function TicketsPage() {
     }
   };
 
+  const filteredTickets = tickets.filter(ticket => {
+    if (filterStatus !== 'all' && ticket.status !== filterStatus) return false;
+    if (filterType !== 'all' && ticket.type !== filterType) return false;
+    return true;
+  });
+
   return (
     <div className="flex h-screen w-full bg-background-light dark:bg-background-dark">
       {/* Sidebar */}
@@ -120,18 +128,52 @@ export default function TicketsPage() {
       {/* Main Content */}
       <main className="flex-1 p-8 overflow-y-auto">
         <div className="max-w-6xl mx-auto">
-          <div className="flex justify-between items-center mb-8">
-            <div>
-              <h1 className="text-gray-900 dark:text-white text-3xl font-bold mb-2">My Tickets</h1>
-              <p className="text-gray-600 dark:text-gray-400">View and manage your support tickets</p>
+          <div className="mb-8">
+            <div className="flex justify-between items-center mb-6">
+              <div>
+                <h1 className="text-gray-900 dark:text-white text-3xl font-bold mb-2">My Tickets</h1>
+                <p className="text-gray-600 dark:text-gray-400">View and manage your support tickets</p>
+              </div>
+              <Link
+                href="/tickets/create"
+                className="px-6 py-3 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 transition-colors flex items-center gap-2"
+              >
+                <span className="material-symbols-outlined">add</span>
+                New Ticket
+              </Link>
             </div>
-            <Link
-              href="/tickets/create"
-              className="px-6 py-3 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 transition-colors flex items-center gap-2"
-            >
-              <span className="material-symbols-outlined">add</span>
-              New Ticket
-            </Link>
+
+            {/* Filters */}
+            <div className="flex gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Filter by Status</label>
+                <select
+                  value={filterStatus}
+                  onChange={(e) => setFilterStatus(e.target.value)}
+                  className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary"
+                >
+                  <option value="all">All Status</option>
+                  <option value="Open">Open</option>
+                  <option value="In Progress">In Progress</option>
+                  <option value="Pending">Pending</option>
+                  <option value="Resolved">Resolved</option>
+                  <option value="Closed">Closed</option>
+                  <option value="Urgent">Urgent</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Filter by Type</label>
+                <select
+                  value={filterType}
+                  onChange={(e) => setFilterType(e.target.value)}
+                  className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary"
+                >
+                  <option value="all">All Types</option>
+                  <option value="IT Support">IT Support</option>
+                  <option value="Facility">Facility</option>
+                </select>
+              </div>
+            </div>
           </div>
 
           {loadingTickets ? (
@@ -175,8 +217,12 @@ export default function TicketsPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                  {tickets.map((ticket) => (
-                    <tr key={ticket.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/30 cursor-pointer">
+                  {filteredTickets.map((ticket) => (
+                    <tr 
+                      key={ticket.id} 
+                      onClick={() => router.push(`/tickets/${ticket.id}`)}
+                      className="hover:bg-gray-50 dark:hover:bg-gray-700/30 cursor-pointer"
+                    >
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className="text-sm font-medium text-primary">#{ticket.ticketNumber}</span>
                       </td>

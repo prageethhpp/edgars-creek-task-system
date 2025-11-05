@@ -33,28 +33,55 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      if (firebaseUser) {
-        // Fetch user data from Firestore
-        const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));
-        if (userDoc.exists()) {
-          setUser(userDoc.data() as UserType);
+      console.log('Auth state changed:', firebaseUser ? 'User logged in' : 'No user');
+      try {
+        if (firebaseUser) {
+          console.log('Fetching user from Firestore...');
+          // Try to fetch user data from Firestore
+          try {
+            const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));
+            if (userDoc.exists()) {
+              console.log('User found in Firestore');
+              setUser(userDoc.data() as UserType);
+            } else {
+              console.log('Creating new user profile in Firestore');
+              // Create default user profile
+              const newUser: UserType = {
+                uid: firebaseUser.uid,
+                email: firebaseUser.email || '',
+                displayName: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'User',
+                role: 'staff',
+                photoURL: firebaseUser.photoURL || undefined,
+                createdAt: new Date(),
+              };
+              await setDoc(doc(db, 'users', firebaseUser.uid), newUser);
+              console.log('User profile created');
+              setUser(newUser);
+            }
+          } catch (firestoreError) {
+            console.error('Firestore error, using basic user data:', firestoreError);
+            // If Firestore fails, create a basic user object from Firebase Auth
+            const basicUser: UserType = {
+              uid: firebaseUser.uid,
+              email: firebaseUser.email || '',
+              displayName: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'User',
+              role: 'staff',
+              photoURL: firebaseUser.photoURL || undefined,
+              createdAt: new Date(),
+            };
+            setUser(basicUser);
+          }
         } else {
-          // Create default user profile
-          const newUser: UserType = {
-            uid: firebaseUser.uid,
-            email: firebaseUser.email || '',
-            displayName: firebaseUser.displayName || '',
-            role: 'staff',
-            photoURL: firebaseUser.photoURL || undefined,
-            createdAt: new Date(),
-          };
-          await setDoc(doc(db, 'users', firebaseUser.uid), newUser);
-          setUser(newUser);
+          console.log('No user, setting to null');
+          setUser(null);
         }
-      } else {
+      } catch (error) {
+        console.error('Error in auth state change:', error);
         setUser(null);
+      } finally {
+        console.log('Setting loading to false');
+        setLoading(false);
       }
-      setLoading(false);
     });
 
     return unsubscribe;

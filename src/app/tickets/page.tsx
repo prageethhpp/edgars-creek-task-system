@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { collection, query, where, orderBy, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import type { Ticket } from '@/types';
+import { PriorityBadge, AssignedBadge } from '@/components/PriorityBadge';
 
 export default function TicketsPage() {
   const { user, loading } = useAuth();
@@ -203,13 +204,16 @@ export default function TicketsPage() {
                       Ticket ID
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                      Type
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                       Subject
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                      Priority
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                       Status
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                      Assigned To
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                       Created
@@ -221,21 +225,30 @@ export default function TicketsPage() {
                     <tr 
                       key={ticket.id} 
                       onClick={() => router.push(`/tickets/${ticket.id}`)}
-                      className="hover:bg-gray-50 dark:hover:bg-gray-700/30 cursor-pointer"
+                      className="hover:bg-gray-50 dark:hover:bg-gray-700/30 cursor-pointer transition-colors"
                     >
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="text-sm font-medium text-primary">#{ticket.ticketNumber}</span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="text-sm text-gray-900 dark:text-white">{ticket.type}</span>
+                        <div className="flex items-center gap-2">
+                          <span className="material-symbols-outlined text-gray-400 text-sm">{ticket.type === 'IT Support' ? 'computer' : 'build'}</span>
+                          <span className="text-sm font-medium text-primary">#{ticket.ticketNumber}</span>
+                        </div>
                       </td>
                       <td className="px-6 py-4">
-                        <span className="text-sm text-gray-900 dark:text-white">{ticket.subject}</span>
+                        <div className="flex flex-col">
+                          <span className="text-sm font-medium text-gray-900 dark:text-white">{ticket.subject}</span>
+                          <span className="text-xs text-gray-500 dark:text-gray-400">{ticket.type}</span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <PriorityBadge priority={ticket.priority} size="sm" />
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(ticket.status)}`}>
                           {ticket.status}
                         </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <AssignedBadge assignedToName={ticket.assignedToName} size="sm" />
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                         {new Date(ticket.createdAt).toLocaleDateString()}

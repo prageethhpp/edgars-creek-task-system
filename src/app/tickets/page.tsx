@@ -99,10 +99,17 @@ export default function TicketsPage() {
           </div>
 
           <nav className="flex flex-col gap-2 mt-4">
-            <Link href="/dashboard" className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">
-              <span className="material-symbols-outlined">dashboard</span>
-              <p className="text-sm font-medium">Dashboard</p>
-            </Link>
+            {(user.role === 'agent' || user.role === 'admin') ? (
+              <Link href="/agent" className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">
+                <span className="material-symbols-outlined">support_agent</span>
+                <p className="text-sm font-medium">Agent Dashboard</p>
+              </Link>
+            ) : (
+              <Link href="/dashboard" className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">
+                <span className="material-symbols-outlined">dashboard</span>
+                <p className="text-sm font-medium">Dashboard</p>
+              </Link>
+            )}
             <Link href="/tickets/create" className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">
               <span className="material-symbols-outlined">add_circle</span>
               <p className="text-sm font-medium">Create Ticket</p>
@@ -111,6 +118,12 @@ export default function TicketsPage() {
               <span className="material-symbols-outlined">local_offer</span>
               <p className="text-sm font-medium">My Tickets</p>
             </Link>
+            {(user.role === 'agent' || user.role === 'admin') && (
+              <Link href="/agent/reports" className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">
+                <span className="material-symbols-outlined">bar_chart</span>
+                <p className="text-sm font-medium">Reports</p>
+              </Link>
+            )}
           </nav>
         </div>
 

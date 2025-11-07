@@ -18,6 +18,7 @@ function CreateTicketForm() {
   const [subject, setSubject] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('Hardware');
+  const [priority, setPriority] = useState<'Low' | 'Medium' | 'High' | 'Critical'>('Medium');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
@@ -56,7 +57,7 @@ function CreateTicketForm() {
         description,
         category,
         status: 'Open',
-        priority: 'Medium',
+        priority,
         createdBy: user.uid,
         createdByName: user.displayName,
         createdByEmail: user.email,
@@ -209,6 +210,37 @@ function CreateTicketForm() {
                   </select>
                 </div>
               )}
+
+              {/* Priority */}
+              <div>
+                <label className="text-gray-900 dark:text-gray-200 text-sm font-medium block mb-2">
+                  Priority Level
+                </label>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  {[
+                    { value: 'Low', color: 'bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300', icon: 'trending_down' },
+                    { value: 'Medium', color: 'bg-blue-50 dark:bg-blue-900/20 border-blue-300 dark:border-blue-700 text-blue-700 dark:text-blue-400', icon: 'remove' },
+                    { value: 'High', color: 'bg-orange-50 dark:bg-orange-900/20 border-orange-300 dark:border-orange-700 text-orange-700 dark:text-orange-400', icon: 'trending_up' },
+                    { value: 'Critical', color: 'bg-red-50 dark:bg-red-900/20 border-red-300 dark:border-red-700 text-red-700 dark:text-red-400', icon: 'emergency' }
+                  ].map((p) => (
+                    <label key={p.value} className={`flex items-center justify-center p-3 border-2 rounded-lg cursor-pointer transition-all ${
+                      priority === p.value 
+                        ? `${p.color} ring-2 ring-offset-2 ring-primary` 
+                        : 'border-gray-300 dark:border-gray-600 hover:border-primary'
+                    }`}>
+                      <input
+                        type="radio"
+                        name="priority"
+                        checked={priority === p.value}
+                        onChange={() => setPriority(p.value as any)}
+                        className="sr-only"
+                      />
+                      <span className="material-symbols-outlined text-lg mr-1">{p.icon}</span>
+                      <span className="text-sm font-medium">{p.value}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
 
               {/* Email (read-only) */}
               <div>

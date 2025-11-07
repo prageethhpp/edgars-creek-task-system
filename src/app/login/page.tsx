@@ -54,11 +54,11 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden bg-background-light dark:bg-background-dark">
+    <div className="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden bg-gradient-to-br from-background-light to-gray-100 dark:from-background-dark dark:to-gray-900">
       <div className="flex h-full grow flex-col">
         <div className="px-4 flex flex-1 justify-center items-center py-5">
-          <div className="w-full max-w-4xl">
-            <div className="bg-white dark:bg-background-dark/50 shadow-xl rounded-xl overflow-hidden grid grid-cols-1 md:grid-cols-2">
+          <div className="w-full max-w-4xl animate-scale-in">
+            <div className="bg-white dark:bg-background-dark/50 shadow-2xl rounded-2xl overflow-hidden grid grid-cols-1 md:grid-cols-2 border border-gray-200 dark:border-gray-700">
               {/* Left Panel: Branding */}
               <div className="relative hidden md:flex flex-col items-center justify-center p-8 bg-primary/10 dark:bg-primary/20">
                 <div className="w-full h-full bg-center bg-no-repeat bg-cover aspect-auto rounded-none" 
@@ -122,7 +122,7 @@ export default function LoginPage() {
                   <button
                     onClick={handleGoogleSignIn}
                     disabled={loading}
-                    className="flex items-center justify-center w-full gap-2 px-4 py-2.5 text-sm font-medium border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors disabled:opacity-50"
+                    className="flex items-center justify-center w-full gap-3 px-4 py-3 text-sm font-medium border-2 border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 hover:border-gray-400 dark:hover:border-gray-500 hover:shadow-md transition-all duration-200 disabled:opacity-50"
                   >
                     <svg className="w-5 h-5" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
                       <path d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z" fill="#fbc02d"/>
@@ -141,8 +141,9 @@ export default function LoginPage() {
 
                   {/* Error Message */}
                   {error && (
-                    <div className="mb-4 p-3 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 text-sm rounded-lg">
-                      {error}
+                    <div className="mb-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 text-sm rounded-lg flex items-start gap-3 animate-shake">
+                      <span className="text-lg font-bold">✕</span>
+                      <span className="flex-1">{error}</span>
                     </div>
                   )}
 
@@ -218,8 +219,14 @@ export default function LoginPage() {
                       <button
                         type="submit"
                         disabled={loading}
-                        className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors disabled:opacity-50"
+                        className="w-full flex items-center justify-center gap-2 py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary/90 hover:shadow-lg hover:scale-[1.02] active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-200 disabled:opacity-50 disabled:hover:scale-100"
                       >
+                        {loading && (
+                          <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                        )}
                         {loading ? 'Please wait...' : (isLogin ? 'Login' : 'Register')}
                       </button>
                     </div>

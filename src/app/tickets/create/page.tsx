@@ -4,7 +4,7 @@ import { useState, useEffect, Suspense } from 'react';
 import { useAuth } from '@/lib/AuthContext';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
 function CreateTicketForm() {
@@ -55,6 +55,7 @@ function CreateTicketForm() {
       const ticketNumber = `ECPS-${Date.now().toString().slice(-6)}`;
 
       // Create ticket in Firestore
+      const now = new Date();
       await addDoc(collection(db, 'tickets'), {
         ticketNumber,
         type: ticketType,
@@ -66,8 +67,8 @@ function CreateTicketForm() {
         createdBy: user.uid,
         createdByName: user.displayName,
         createdByEmail: user.email,
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp(),
+        createdAt: now,
+        updatedAt: now,
       });
 
       setSuccess(true);

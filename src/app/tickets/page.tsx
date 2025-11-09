@@ -37,6 +37,7 @@ export default function TicketsPage() {
   const loadTickets = async () => {
     if (!user) return;
     
+    setLoadingTickets(true);
     try {
       const q = query(
         collection(db, 'tickets'),
@@ -52,6 +53,7 @@ export default function TicketsPage() {
         updatedAt: doc.data().updatedAt?.toDate() || new Date(),
       })) as Ticket[];
       
+      console.log('Loaded tickets:', ticketsData.length, ticketsData);
       setTickets(ticketsData);
     } catch (error) {
       console.error('Error loading tickets:', error);
@@ -157,13 +159,23 @@ export default function TicketsPage() {
                 <h1 className="text-gray-900 dark:text-white text-3xl font-bold mb-2">My Tickets</h1>
                 <p className="text-gray-600 dark:text-gray-400">View and manage your support tickets</p>
               </div>
-              <Link
-                href="/tickets/create"
-                className="px-6 py-3 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 transition-colors flex items-center gap-2"
-              >
-                <span className="material-symbols-outlined">add</span>
-                New Ticket
-              </Link>
+              <div className="flex gap-3">
+                <button
+                  onClick={loadTickets}
+                  disabled={loadingTickets}
+                  className="px-4 py-3 bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors flex items-center gap-2 disabled:opacity-50"
+                >
+                  <span className={`material-symbols-outlined ${loadingTickets ? 'animate-spin' : ''}`}>refresh</span>
+                  Refresh
+                </button>
+                <Link
+                  href="/tickets/create"
+                  className="px-6 py-3 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 transition-colors flex items-center gap-2"
+                >
+                  <span className="material-symbols-outlined">add</span>
+                  New Ticket
+                </Link>
+              </div>
             </div>
 
             {/* Filters */}

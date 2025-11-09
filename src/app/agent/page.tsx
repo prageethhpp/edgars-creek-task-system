@@ -9,7 +9,7 @@ import { db } from '@/lib/firebase';
 import type { Ticket, TicketStats } from '@/types';
 
 export default function AgentDashboard() {
-  const { user, loading } = useAuth();
+  const { user, loading, logout } = useAuth();
   const router = useRouter();
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [stats, setStats] = useState<TicketStats>({ total: 0, open: 0, inProgress: 0, resolved: 0, urgent: 0 });
@@ -17,6 +17,11 @@ export default function AgentDashboard() {
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [filterType, setFilterType] = useState<string>('all');
   const [selectedTab, setSelectedTab] = useState<'all' | 'assigned'>('all');
+
+  const handleLogout = async () => {
+    await logout();
+    router.push('/');
+  };
 
   useEffect(() => {
     if (!loading && !user) {
@@ -176,10 +181,13 @@ export default function AgentDashboard() {
             <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user.email}</p>
             <p className="text-xs text-primary font-medium mt-1 uppercase">{user.role === 'admin' ? 'Admin' : 'Agent'}</p>
           </div>
-          <Link href="/" className="flex items-center gap-3 px-3 py-2 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-200">
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-3 px-3 py-2 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-200"
+          >
             <span className="material-symbols-outlined">logout</span>
             <p className="text-sm font-medium">Logout</p>
-          </Link>
+          </button>
         </div>
       </aside>
 

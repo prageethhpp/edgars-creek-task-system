@@ -28,7 +28,7 @@ export default function ReportsPage() {
 
   useEffect(() => {
     if (!loading && !user) {
-      router.push('/login');
+      router.push('/');
     }
     if (!loading && user && user.role !== 'agent' && user.role !== 'admin') {
       router.push('/dashboard');
@@ -182,11 +182,11 @@ export default function ReportsPage() {
 
         <div className="mt-auto flex flex-col gap-1">
           <div className="px-3 py-2 border-t border-gray-200 dark:border-gray-700 pt-4">
-            <p className="text-sm font-medium text-gray-900 dark:text-white">{user.displayName}</p>
-            <p className="text-xs text-gray-500 dark:text-gray-400">{user.email}</p>
-            <p className="text-xs text-primary font-medium mt-1">{user.role === 'admin' ? 'Admin' : 'Agent'}</p>
+            <p className="text-sm font-medium text-gray-900 dark:text-white truncate">{user.displayName}</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user.email}</p>
+            <p className="text-xs text-primary font-medium mt-1 uppercase">{user.role === 'admin' ? 'Admin' : 'Agent'}</p>
           </div>
-          <Link href="/login" className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">
+          <Link href="/" className="flex items-center gap-3 px-3 py-2 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-200">
             <span className="material-symbols-outlined">logout</span>
             <p className="text-sm font-medium">Logout</p>
           </Link>

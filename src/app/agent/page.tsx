@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { collection, query, where, orderBy, getDocs, updateDoc, doc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import type { Ticket, TicketStats } from '@/types';
+import { PriorityBadge, AssignedBadge } from '@/components/PriorityBadge';
 
 export default function AgentDashboard() {
   const { user, loading, logout } = useAuth();
@@ -16,6 +17,8 @@ export default function AgentDashboard() {
   const [loadingTickets, setLoadingTickets] = useState(true);
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [filterType, setFilterType] = useState<string>('all');
+  const [filterPriority, setFilterPriority] = useState<string>('all');
+  const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedTab, setSelectedTab] = useState<'all' | 'assigned'>('all');
 
   const handleLogout = async () => {
@@ -135,6 +138,18 @@ export default function AgentDashboard() {
   const filteredTickets = tickets.filter(ticket => {
     if (filterStatus !== 'all' && ticket.status !== filterStatus) return false;
     if (filterType !== 'all' && ticket.type !== filterType) return false;
+    if (filterPriority !== 'all' && ticket.priority !== filterPriority) return false;
+    
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      return (
+        ticket.ticketNumber.toLowerCase().includes(query) ||
+        ticket.subject.toLowerCase().includes(query) ||
+        ticket.description.toLowerCase().includes(query) ||
+        ticket.createdByName.toLowerCase().includes(query)
+      );
+    }
+    
     return true;
   });
 
@@ -267,35 +282,66 @@ export default function AgentDashboard() {
             </button>
           </div>
 
-          {/* Filters */}
-          <div className="flex gap-4 mb-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Filter by Status</label>
-              <select
-                value={filterStatus}
-                onChange={(e) => setFilterStatus(e.target.value)}
-                className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary"
-              >
-                <option value="all">All Status</option>
-                <option value="Open">Open</option>
-                <option value="In Progress">In Progress</option>
-                <option value="Pending">Pending</option>
-                <option value="Resolved">Resolved</option>
-                <option value="Closed">Closed</option>
-                <option value="Urgent">Urgent</option>
-              </select>
+          {/* Search and Filters */}
+          <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 mb-6">
+            <div className="grid grid-cols-4 gap-4">
+              <div className="col-span-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Search</label>
+                <div className="relative">
+                  <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">search</span>
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search by ticket number, subject, or creator..."
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Status</label>
+                <select
+                  value={filterStatus}
+                  onChange={(e) => setFilterStatus(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary"
+                >
+                  <option value="all">All Status</option>
+                  <option value="Open">Open</option>
+                  <option value="In Progress">In Progress</option>
+                  <option value="Pending">Pending</option>
+                  <option value="Resolved">Resolved</option>
+                  <option value="Closed">Closed</option>
+                  <option value="Urgent">Urgent</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Type</label>
+                <select
+                  value={filterType}
+                  onChange={(e) => setFilterType(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary"
+                >
+                  <option value="all">All Types</option>
+                  <option value="IT Support">IT Support</option>
+                  <option value="Facility">Facility</option>
+                </select>
+              </div>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Filter by Type</label>
-              <select
-                value={filterType}
-                onChange={(e) => setFilterType(e.target.value)}
-                className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary"
+            <div className="mt-4 flex items-center gap-3">
+              <button
+                onClick={() => {
+                  setSearchQuery('');
+                  setFilterStatus('all');
+                  setFilterType('all');
+                  setFilterPriority('all');
+                }}
+                className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors text-sm font-medium"
               >
-                <option value="all">All Types</option>
-                <option value="IT Support">IT Support</option>
-                <option value="Facility">Facility</option>
-              </select>
+                Clear Filters
+              </button>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Showing {filteredTickets.length} of {tickets.length} tickets
+              </p>
             </div>
           </div>
 
@@ -320,26 +366,26 @@ export default function AgentDashboard() {
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                         Ticket ID
                       </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                      Type
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                      Subject
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                      Requester
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                      Status
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                      Assigned To
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                        Type
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                        Subject
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                        Requester
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                        Priority
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                        Status
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                        Assigned To
+                      </th>
+                    </tr>
+                  </thead>
                 <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                   {filteredTickets.map((ticket) => (
                     <tr key={ticket.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/30">
@@ -358,6 +404,9 @@ export default function AgentDashboard() {
                         <span className="text-sm text-gray-900 dark:text-white">{ticket.createdByName}</span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
+                        <PriorityBadge priority={ticket.priority} />
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
                         <select
                           value={ticket.status}
                           onChange={(e) => handleStatusChange(ticket.id, e.target.value)}
@@ -372,29 +421,7 @@ export default function AgentDashboard() {
                         </select>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        {ticket.assignedToName ? (
-                          <span className="text-sm text-gray-900 dark:text-white">{ticket.assignedToName}</span>
-                        ) : (
-                          <span className="text-sm text-gray-400">Unassigned</span>
-                        )}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex gap-2">
-                          <Link
-                            href={`/tickets/${ticket.id}`}
-                            className="px-3 py-1 bg-primary text-white text-sm rounded hover:bg-primary/90"
-                          >
-                            View
-                          </Link>
-                          {!ticket.assignedTo && (
-                            <button
-                              onClick={() => handleAssignToMe(ticket.id)}
-                              className="px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700"
-                            >
-                              Assign to Me
-                            </button>
-                          )}
-                        </div>
+                        <AssignedBadge assignedToName={ticket.assignedToName} />
                       </td>
                     </tr>
                   ))}

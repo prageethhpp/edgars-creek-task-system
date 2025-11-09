@@ -56,7 +56,7 @@ function CreateTicketForm() {
 
       // Create ticket in Firestore
       const now = new Date();
-      await addDoc(collection(db, 'tickets'), {
+      const ticketData = {
         ticketNumber,
         type: ticketType,
         subject,
@@ -69,7 +69,11 @@ function CreateTicketForm() {
         createdByEmail: user.email,
         createdAt: now,
         updatedAt: now,
-      });
+      };
+      
+      console.log('Creating ticket with data:', ticketData);
+      const docRef = await addDoc(collection(db, 'tickets'), ticketData);
+      console.log('Ticket created successfully with ID:', docRef.id);
 
       setSuccess(true);
       

@@ -39,13 +39,17 @@ export default function TicketsPage() {
     
     setLoadingTickets(true);
     try {
+      console.log('Loading tickets for user:', user.uid);
       const q = query(
         collection(db, 'tickets'),
         where('createdBy', '==', user.uid),
         orderBy('createdAt', 'desc')
       );
       
+      console.log('Executing query...');
       const querySnapshot = await getDocs(q);
+      console.log('Query returned', querySnapshot.docs.length, 'documents');
+      
       const ticketsData = querySnapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data(),

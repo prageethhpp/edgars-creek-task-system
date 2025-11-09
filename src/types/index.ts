@@ -2,7 +2,7 @@ export interface User {
   uid: string;
   email: string;
   displayName: string;
-  role: 'staff' | 'agent' | 'admin';
+  role: 'staff' | 'agent' | 'admin' | 'it-agent' | 'facility-agent';
   department?: string;
   photoURL?: string;
   createdAt: Date;

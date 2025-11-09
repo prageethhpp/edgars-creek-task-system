@@ -15,7 +15,7 @@ export default function AgentDashboard() {
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [stats, setStats] = useState<TicketStats>({ total: 0, open: 0, inProgress: 0, resolved: 0, urgent: 0 });
   const [loadingTickets, setLoadingTickets] = useState(true);
-  const [filterStatus, setFilterStatus] = useState<string>('all');
+  const [filterStatus, setFilterStatus] = useState<string>('Open');
   const [filterType, setFilterType] = useState<string>('all');
   const [filterPriority, setFilterPriority] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -30,13 +30,24 @@ export default function AgentDashboard() {
     if (!loading && !user) {
       router.push('/');
     }
-    if (!loading && user && user.role !== 'agent' && user.role !== 'admin') {
+    if (!loading && user && user.role !== 'agent' && user.role !== 'admin' && user.role !== 'it-agent' && user.role !== 'facility-agent') {
       router.push('/dashboard');
     }
   }, [user, loading, router]);
 
   useEffect(() => {
-    if (user && (user.role === 'agent' || user.role === 'admin')) {
+    if (user) {
+      // Set default filter type based on agent role
+      if (user.role === 'it-agent') {
+        setFilterType('IT Support');
+      } else if (user.role === 'facility-agent') {
+        setFilterType('Facility');
+      }
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (user && (user.role === 'agent' || user.role === 'admin' || user.role === 'it-agent' || user.role === 'facility-agent')) {
       loadTickets();
     }
   }, [user, selectedTab]);

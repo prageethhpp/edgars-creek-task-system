@@ -46,7 +46,7 @@ export default function UsersManagementPage() {
     }
   };
 
-  const handleRoleChange = async (userId: string, newRole: 'staff' | 'agent' | 'admin') => {
+  const handleRoleChange = async (userId: string, newRole: 'staff' | 'agent' | 'admin' | 'it-agent' | 'facility-agent') => {
     try {
       await updateDoc(doc(db, 'users', userId), {
         role: newRole
@@ -74,8 +74,21 @@ export default function UsersManagementPage() {
     switch (role) {
       case 'admin': return 'bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-400';
       case 'agent': return 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-400';
+      case 'it-agent': return 'bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-400';
+      case 'facility-agent': return 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-400';
       case 'staff': return 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-400';
       default: return 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-400';
+    }
+  };
+
+  const getRoleDisplayName = (role: string) => {
+    switch (role) {
+      case 'admin': return 'ADMIN';
+      case 'agent': return 'GENERAL AGENT';
+      case 'it-agent': return 'IT SUPPORT AGENT';
+      case 'facility-agent': return 'FACILITY AGENT';
+      case 'staff': return 'STAFF';
+      default: return role.toUpperCase();
     }
   };
 
@@ -216,18 +229,20 @@ export default function UsersManagementPage() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getRoleBadgeColor(u.role)}`}>
-                          {u.role.toUpperCase()}
+                          {getRoleDisplayName(u.role)}
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <select
                           value={u.role}
-                          onChange={(e) => handleRoleChange(u.uid, e.target.value as 'staff' | 'agent' | 'admin')}
+                          onChange={(e) => handleRoleChange(u.uid, e.target.value as 'staff' | 'agent' | 'admin' | 'it-agent' | 'facility-agent')}
                           disabled={u.uid === user.uid}
                           className="text-sm border border-gray-300 dark:border-gray-600 rounded px-2 py-1 bg-white dark:bg-gray-700 text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           <option value="staff">Staff</option>
-                          <option value="agent">Agent</option>
+                          <option value="agent">General Agent</option>
+                          <option value="it-agent">IT Support Agent</option>
+                          <option value="facility-agent">Facility Agent</option>
                           <option value="admin">Admin</option>
                         </select>
                       </td>

@@ -32,7 +32,7 @@ export default function DashboardPage() {
       window.location.href = '/';
     }
     // Auto-redirect agents and admins to agent dashboard
-    if (mounted && !loading && user && (user.role === 'agent' || user.role === 'admin')) {
+    if (mounted && !loading && user && (user.role === 'agent' || user.role === 'admin' || user.role === 'it-agent' || user.role === 'facility-agent')) {
       router.push('/agent');
     }
   }, [user, loading, mounted, router]);

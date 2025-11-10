@@ -4,7 +4,7 @@ import { useState, useEffect, Suspense } from 'react';
 import { useAuth } from '@/lib/AuthContext';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, query, where, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
 function CreateTicketForm() {
@@ -74,6 +74,42 @@ function CreateTicketForm() {
       console.log('Creating ticket with data:', ticketData);
       const docRef = await addDoc(collection(db, 'tickets'), ticketData);
       console.log('Ticket created successfully with ID:', docRef.id);
+
+      // Create notification for the user
+      await addDoc(collection(db, 'notifications'), {
+        userId: user.uid,
+        ticketId: docRef.id,
+        ticketNumber: ticketNumber,
+        type: 'ticket_created',
+        message: `Your ticket #${ticketNumber} has been created successfully`,
+        read: false,
+        createdAt: now,
+      });
+
+      // Notify all agents of the appropriate type
+      const agentRole = ticketType === 'IT Support' ? 'it-agent' : 'facility-agent';
+      const agentsQuery = query(
+        collection(db, 'users'),
+        where('role', 'in', [agentRole, 'agent', 'admin'])
+      );
+      const agentsSnapshot = await getDocs(agentsQuery);
+      
+      const notificationPromises = agentsSnapshot.docs.map((agentDoc) => {
+        if (agentDoc.id !== user.uid) {
+          return addDoc(collection(db, 'notifications'), {
+            userId: agentDoc.id,
+            ticketId: docRef.id,
+            ticketNumber: ticketNumber,
+            type: 'ticket_created',
+            message: `New ${ticketType} ticket #${ticketNumber} created by ${user.displayName}`,
+            read: false,
+            createdAt: now,
+          });
+        }
+        return Promise.resolve();
+      });
+      
+      await Promise.all(notificationPromises);
 
       setSuccess(true);
       

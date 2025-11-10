@@ -9,7 +9,7 @@ import { db } from '@/lib/firebase';
 import type { Ticket, Message } from '@/types';
 
 export default function TicketDetailsPage() {
-  const { user, loading } = useAuth();
+  const { user, loading, logout } = useAuth();
   const router = useRouter();
   const params = useParams();
   const ticketId = params.id as string;
@@ -22,9 +22,6 @@ export default function TicketDetailsPage() {
   const [agents, setAgents] = useState<any[]>([]);
   const [showAssignDialog, setShowAssignDialog] = useState(false);
   const [selectedAgent, setSelectedAgent] = useState('');
-  const [showInternalNote, setShowInternalNote] = useState(false);
-  const [internalNote, setInternalNote] = useState('');
-  const [sendingInternal, setSendingInternal] = useState(false);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -36,7 +33,7 @@ export default function TicketDetailsPage() {
     if (user && ticketId) {
       loadTicket();
       loadMessages();
-      if (user.role === 'agent' || user.role === 'admin') {
+      if (user.role === 'agent' || user.role === 'admin' || user.role === 'it-agent' || user.role === 'facility-agent') {
         loadAgents();
       }
     }
@@ -46,7 +43,7 @@ export default function TicketDetailsPage() {
     try {
       const q = query(
         collection(db, 'users'),
-        where('role', 'in', ['agent', 'admin'])
+        where('role', 'in', ['agent', 'admin', 'it-agent', 'facility-agent'])
       );
       const querySnapshot = await getDocs(q);
       const agentsData = querySnapshot.docs.map(doc => ({
@@ -104,6 +101,7 @@ export default function TicketDetailsPage() {
 
     setSending(true);
     try {
+      const now = new Date();
       await addDoc(collection(db, 'messages'), {
         ticketId: ticketId,
         senderId: user.uid,
@@ -111,13 +109,39 @@ export default function TicketDetailsPage() {
         senderRole: user.role,
         message: newMessage,
         isInternal: false,
-        createdAt: serverTimestamp(),
+        createdAt: now,
       });
 
       // Update ticket's updatedAt timestamp
       await updateDoc(doc(db, 'tickets', ticketId), {
-        updatedAt: serverTimestamp(),
+        updatedAt: now,
       });
+
+      // Create notification for ticket creator (if not the sender)
+      if (ticket.createdBy !== user.uid) {
+        await addDoc(collection(db, 'notifications'), {
+          userId: ticket.createdBy,
+          ticketId: ticketId,
+          ticketNumber: ticket.ticketNumber,
+          type: 'new_message',
+          message: `${user.displayName} replied to ticket #${ticket.ticketNumber}`,
+          read: false,
+          createdAt: new Date(),
+        });
+      }
+
+      // Create notification for assigned agent (if exists and not the sender)
+      if (ticket.assignedTo && ticket.assignedTo !== user.uid) {
+        await addDoc(collection(db, 'notifications'), {
+          userId: ticket.assignedTo,
+          ticketId: ticketId,
+          ticketNumber: ticket.ticketNumber,
+          type: 'new_message',
+          message: `${user.displayName} replied to ticket #${ticket.ticketNumber}`,
+          read: false,
+          createdAt: new Date(),
+        });
+      }
 
       setNewMessage('');
       loadMessages();
@@ -125,36 +149,6 @@ export default function TicketDetailsPage() {
       console.error('Error sending message:', error);
     } finally {
       setSending(false);
-    }
-  };
-
-  const handleSendInternalNote = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!internalNote.trim() || !user || !ticket) return;
-
-    setSendingInternal(true);
-    try {
-      await addDoc(collection(db, 'messages'), {
-        ticketId: ticketId,
-        senderId: user.uid,
-        senderName: user.displayName,
-        senderRole: user.role,
-        message: internalNote,
-        isInternal: true,
-        createdAt: serverTimestamp(),
-      });
-
-      await updateDoc(doc(db, 'tickets', ticketId), {
-        updatedAt: serverTimestamp(),
-      });
-
-      setInternalNote('');
-      setShowInternalNote(false);
-      loadMessages();
-    } catch (error) {
-      console.error('Error sending internal note:', error);
-    } finally {
-      setSendingInternal(false);
     }
   };
 
@@ -179,6 +173,30 @@ export default function TicketDetailsPage() {
         isInternal: true,
         createdAt: serverTimestamp(),
       });
+
+      // Create notification for the assigned agent
+      await addDoc(collection(db, 'notifications'), {
+        userId: selectedAgent,
+        ticketId: ticketId,
+        ticketNumber: ticket.ticketNumber,
+        type: 'ticket_assigned',
+        message: `You have been assigned to ticket #${ticket.ticketNumber}`,
+        read: false,
+        createdAt: new Date(),
+      });
+
+      // Create notification for ticket creator
+      if (ticket.createdBy !== user!.uid) {
+        await addDoc(collection(db, 'notifications'), {
+          userId: ticket.createdBy,
+          ticketId: ticketId,
+          ticketNumber: ticket.ticketNumber,
+          type: 'ticket_assigned',
+          message: `Ticket #${ticket.ticketNumber} has been assigned to ${agent?.displayName || 'Unknown'}`,
+          read: false,
+          createdAt: new Date(),
+        });
+      }
 
       setShowAssignDialog(false);
       setSelectedAgent('');
@@ -208,6 +226,19 @@ export default function TicketDetailsPage() {
         isInternal: true,
         createdAt: serverTimestamp(),
       });
+
+      // Create notification for ticket creator
+      if (ticket.createdBy !== user!.uid) {
+        await addDoc(collection(db, 'notifications'), {
+          userId: ticket.createdBy,
+          ticketId: ticketId,
+          ticketNumber: ticket.ticketNumber,
+          type: 'status_changed',
+          message: `Ticket #${ticket.ticketNumber} status changed to ${newStatus}`,
+          read: false,
+          createdAt: new Date(),
+        });
+      }
 
       loadTicket();
       loadMessages();
@@ -291,10 +322,16 @@ export default function TicketDetailsPage() {
             <p className="text-sm font-medium text-gray-900 dark:text-white">{user.displayName}</p>
             <p className="text-xs text-gray-500 dark:text-gray-400">{user.email}</p>
           </div>
-          <Link href="/login" className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">
+          <button
+            onClick={async () => {
+              await logout();
+              router.push('/');
+            }}
+            className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+          >
             <span className="material-symbols-outlined">logout</span>
             <p className="text-sm font-medium">Logout</p>
-          </Link>
+          </button>
         </div>
       </aside>
 
@@ -344,7 +381,7 @@ export default function TicketDetailsPage() {
           </div>
 
           {/* Action Buttons (Agent/Admin only) */}
-          {(user.role === 'agent' || user.role === 'admin') && (
+          {(user.role === 'agent' || user.role === 'admin' || user.role === 'it-agent' || user.role === 'facility-agent') && (
             <div className="flex gap-3 mt-6">
               <button
                 onClick={() => setShowAssignDialog(true)}
@@ -365,13 +402,6 @@ export default function TicketDetailsPage() {
                 <option value="Closed">Closed</option>
                 <option value="Urgent">Urgent</option>
               </select>
-              <button
-                onClick={() => setShowInternalNote(!showInternalNote)}
-                className="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors text-sm font-medium flex items-center gap-2"
-              >
-                <span className="material-symbols-outlined text-sm">lock</span>
-                Internal Note
-              </button>
             </div>
           )}
         </div>
@@ -398,93 +428,34 @@ export default function TicketDetailsPage() {
             </div>
 
             {/* Messages */}
-            {messages.map((message) => {
-              // Hide internal notes from regular users
-              if (message.isInternal && user.role !== 'agent' && user.role !== 'admin') {
-                return null;
-              }
-
-              return (
-                <div 
-                  key={message.id} 
-                  className={`rounded-lg p-6 border ${
-                    message.isInternal 
-                      ? 'bg-amber-50 dark:bg-amber-900/20 border-amber-300 dark:border-amber-700' 
-                      : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
-                  }`}
-                >
-                  <div className="flex items-start gap-4">
-                    <div className={`${message.senderRole === 'agent' || message.senderRole === 'admin' ? 'bg-blue-600' : 'bg-primary'} rounded-full size-10 flex items-center justify-center text-white font-bold shrink-0`}>
-                      {message.senderName?.charAt(0) || 'U'}
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <p className="font-semibold text-gray-900 dark:text-white">{message.senderName}</p>
-                        {(message.senderRole === 'agent' || message.senderRole === 'admin') && (
-                          <span className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-400 text-xs font-medium rounded">
-                            {message.senderRole === 'admin' ? 'Admin' : 'Agent'}
-                          </span>
-                        )}
-                        {message.isInternal && (
-                          <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 text-xs font-medium rounded flex items-center gap-1">
-                            <span className="material-symbols-outlined text-xs">lock</span>
-                            Internal Note
-                          </span>
-                        )}
-                        <span className="text-sm text-gray-500 dark:text-gray-400">
-                          {new Date(message.createdAt).toLocaleString()}
+            {messages.map((message) => (
+              <div 
+                key={message.id} 
+                className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 rounded-lg p-6 border"
+              >
+                <div className="flex items-start gap-4">
+                  <div className={`${message.senderRole === 'agent' || message.senderRole === 'admin' || message.senderRole === 'it-agent' || message.senderRole === 'facility-agent' ? 'bg-blue-600' : 'bg-primary'} rounded-full size-10 flex items-center justify-center text-white font-bold shrink-0`}>
+                    {message.senderName?.charAt(0) || 'U'}
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <p className="font-semibold text-gray-900 dark:text-white">{message.senderName}</p>
+                      {(message.senderRole === 'agent' || message.senderRole === 'admin' || message.senderRole === 'it-agent' || message.senderRole === 'facility-agent') && (
+                        <span className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-400 text-xs font-medium rounded">
+                          {message.senderRole === 'admin' ? 'Admin' : message.senderRole === 'it-agent' ? 'IT Agent' : message.senderRole === 'facility-agent' ? 'Facility Agent' : 'Agent'}
                         </span>
-                      </div>
-                      <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{message.message}</p>
+                      )}
+                      <span className="text-sm text-gray-500 dark:text-gray-400">
+                        {new Date(message.createdAt).toLocaleString()}
+                      </span>
                     </div>
+                    <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{message.message}</p>
                   </div>
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
         </div>
-
-        {/* Internal Note Form (Agent/Admin only) */}
-        {showInternalNote && (user.role === 'agent' || user.role === 'admin') && (
-          <div className="bg-amber-50 dark:bg-amber-900/20 border-t border-amber-300 dark:border-amber-700 p-6">
-            <div className="max-w-4xl mx-auto">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="material-symbols-outlined text-amber-600 dark:text-amber-400">lock</span>
-                <p className="text-sm font-semibold text-amber-900 dark:text-amber-200">Internal Note (Only visible to agents and admins)</p>
-              </div>
-              <form onSubmit={handleSendInternalNote}>
-                <div className="flex gap-4">
-                  <textarea
-                    value={internalNote}
-                    onChange={(e) => setInternalNote(e.target.value)}
-                    placeholder="Type your internal note..."
-                    rows={3}
-                    className="flex-1 px-4 py-3 border border-amber-300 dark:border-amber-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-amber-500 resize-none"
-                  />
-                  <div className="flex flex-col gap-2">
-                    <button
-                      type="submit"
-                      disabled={sendingInternal || !internalNote.trim()}
-                      className="px-6 py-3 bg-amber-600 text-white rounded-lg font-semibold hover:bg-amber-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      {sendingInternal ? 'Sending...' : 'Send'}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setShowInternalNote(false);
-                        setInternalNote('');
-                      }}
-                      className="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        )}
 
         {/* Reply Form */}
         <div className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-6">

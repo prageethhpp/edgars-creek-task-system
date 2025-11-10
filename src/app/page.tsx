@@ -96,34 +96,11 @@ export default function Home() {
                   {/* Branding Text */}
                   <div className="text-center space-y-3 animate-fade-in" style={{animationDelay: '0.2s'}}>
                     <h1 className="text-3xl lg:text-4xl font-black text-gray-900 dark:text-white tracking-tight">
-                      Edgars Creek
                       <span className="block text-primary">Task System</span>
                     </h1>
                     <p className="text-gray-600 dark:text-gray-300 text-base lg:text-lg">
                       IT Support & Facility Management Portal
                     </p>
-                  </div>
-
-                  {/* Feature Highlights */}
-                  <div className="space-y-3 animate-fade-in" style={{animationDelay: '0.3s'}}>
-                    <div className="flex items-center gap-3 text-gray-700 dark:text-gray-300">
-                      <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <span className="material-symbols-outlined text-blue-600 dark:text-blue-400 text-xl">confirmation_number</span>
-                      </div>
-                      <span className="text-sm font-medium">Track IT Support Tickets</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-gray-700 dark:text-gray-300">
-                      <div className="w-10 h-10 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <span className="material-symbols-outlined text-green-600 dark:text-green-400 text-xl">speed</span>
-                      </div>
-                      <span className="text-sm font-medium">Real-time Status Updates</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-gray-700 dark:text-gray-300">
-                      <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <span className="material-symbols-outlined text-purple-600 dark:text-purple-400 text-xl">analytics</span>
-                      </div>
-                      <span className="text-sm font-medium">Reports & Analytics</span>
-                    </div>
                   </div>
                 </div>
               </div>

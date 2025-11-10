@@ -32,7 +32,7 @@ export interface Message {
   ticketId: string;
   senderId: string;
   senderName: string;
-  senderRole: 'staff' | 'agent' | 'admin';
+  senderRole: 'staff' | 'agent' | 'admin' | 'it-agent' | 'facility-agent';
   message: string;
   isInternal: boolean;
   createdAt: Date;
@@ -57,4 +57,15 @@ export interface TicketStats {
   inProgress: number;
   resolved: number;
   urgent: number;
+}
+
+export interface Notification {
+  id: string;
+  userId: string;
+  ticketId: string;
+  ticketNumber: string;
+  type: 'ticket_created' | 'ticket_assigned' | 'status_changed' | 'new_message' | 'internal_note';
+  message: string;
+  read: boolean;
+  createdAt: Date;
 }

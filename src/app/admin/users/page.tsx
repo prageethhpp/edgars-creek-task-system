@@ -9,7 +9,7 @@ import { db } from '@/lib/firebase';
 import type { User } from '@/types';
 
 export default function UsersManagementPage() {
-  const { user, loading } = useAuth();
+  const { user, loading, logout } = useAuth();
   const router = useRouter();
   const [users, setUsers] = useState<User[]>([]);
   const [loadingUsers, setLoadingUsers] = useState(true);
@@ -133,10 +133,16 @@ export default function UsersManagementPage() {
             <p className="text-xs text-gray-500 dark:text-gray-400">{user.email}</p>
             <p className="text-xs text-red-600 dark:text-red-400 font-medium mt-1">Administrator</p>
           </div>
-          <Link href="/login" className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">
+          <button
+            onClick={async () => {
+              await logout();
+              router.push('/');
+            }}
+            className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+          >
             <span className="material-symbols-outlined">logout</span>
             <p className="text-sm font-medium">Logout</p>
-          </Link>
+          </button>
         </div>
       </aside>
 

@@ -51,7 +51,7 @@ export default function ProfilePage() {
       <div className="flex items-center justify-center min-h-screen bg-background-light dark:bg-background-dark">
         <div className="text-center">
           <p className="text-gray-600 dark:text-gray-400">Please login first</p>
-          <Link href="/login" className="text-primary hover:underline mt-2 block">Go to Login</Link>
+          <Link href="/" className="text-primary hover:underline mt-2 block">Go to Login</Link>
         </div>
       </div>
     );
